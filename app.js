@@ -1,3 +1,4 @@
+
 const express = require('express');
 const mysql = require('mysql2');
 const session = require('express-session');
@@ -87,7 +88,7 @@ app.post('/register', validateRegistration,     (req, res) => {
     const { username, email, password, address, contact, role } = req.body;
 
     const sql = 'INSERT INTO users (username, email, password, address, contact, role) VALUES (?, ?, SHA1(?), ?, ?, ?)';
-    db.query(sql, [username, email, password, address, contact, role], (err, result) => {
+    db.query(sql, [username, email, password, address, contact, 'user'], (err, result) => {
         if (err) {
             throw err;
         }
@@ -162,3 +163,4 @@ app.get('/logout', (req,res) => {
 app.listen(3000, () => {
     console.log('Server started on port 3000');
 });
+
