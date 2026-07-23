@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Books</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body{
+            background:#f5f5f5;
+        }
+
+        .book-card{
+            transition:.3s;
+            border:none;
+            border-radius:15px;
+            overflow:hidden;
+            box-shadow:0 5px 15px rgba(0,0,0,.15);
+        }
+
+        .book-card:hover{
+            transform:translateY(-8px);
+        }
+
+        .book-img{
+
+            height: 280px;
+            width: 100%;
+            object-fit: contain;
+            background: #f8f9fa;
+            padding: 10px;
+        }
+
+        .card-footer{
+            background:white;
+            border:none;
+        }
+
+        .page-title{
+            color:rgb(251, 0, 0);
+            text-shadow: 1px 1px 4px rgb(0,0,0);
+            -webkit-text-stroke: 1px black;
+        }
+        
+        html, body {
+            height: 100%;
+            margin:0;
+        }
+            
+        body {
+            background-image: url('/images/userpage.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+
+        <a class="navbar-brand" href="/">📚 RP Library System</a>
+
+        <div class="navbar-nav ms-auto">
+
+            <a class="nav-link" href="/viewBorrowed">
+                My Borrowed Books
+            </a>
+
+            <a class="nav-link" href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <h2 class="mb-4 page-title">
+        Browse Books
+    </h2>
+
+    <form action="/search" method="GET" class="mb-4">
+
+        <div class="input-group">
+
+            <input
+                type="text"
+                name="keyword"
+                class="form-control"
+                placeholder="Search by title">
+
+            <button class="btn btn-primary">
+                Search
+            </button>
+
+        </div>
+
+    </form>
+
+    <form action="/filter" method="GET">
+        <select name="genre">
+            <option value="">--Select Genre--</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Science">Science</option>
+            <option value="Romance">Romance</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Horror">Horror</option>
+            <option value="Others">Others</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <br>
+
+    <div class="row">
+
+        <% books.forEach(book => { %>
+
+        <div class="col-md-4 mb-4">
+            <div class="card book-card h-100">
+                <% if(book.image){ %>
+
+                    <img src="<%= book.image %>" class="card-img-top book-img" onerror="this.onerror=null; this.src='/images/no-image.png';">
+
+                <% } else { %>
+
+                    <!-- <img src="https://via.placeholder.com/300x250?text=No+Image" class="card-img-top book-img"> -->
+                    <img
+                        src="/images/no-image.png"
+                            width="120"
+                            height="150"
+                            class="rounded shadow mb-2">
+                <% } %>
+
+                <div class="card-body">
+
+                    <h4><%= book.title %></h4>
+
+                    <p>
+                        <strong>Author:</strong>
+                        <%= book.author %>
+                    </p>
+
+                    <p>
+                        <strong>Genre:</strong>
+                        <%= book.genre %>
+                    </p>
+
+                    <p>
+                        Available:
+                        <span class="badge bg-success">
+                            <%= book.availableQuantity %>
+                        </span>
+                    </p>
+                </div>
+
+                <div class="card-footer text-center">
+                    <a
+                        href="/book/<%= book.bookId %>"
+                        class="btn btn-info text-white">
+                        View Details
+                    </a>
+
+                    <% if(book.availableQuantity>0){ %>
+
+                    <form
+                        action="/borrowBook/<%= book.bookId %>" method="POST" style="display:inline;">
+                        <button
+                            class="btn btn-success">
+                            Borrow
+                        </button>
+                    </form>
+
+                    <% }else{ %>
+
+                        <button
+                            class="btn btn-secondary"
+                            disabled>
+                            Out of Stock
+                        </button>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>
+</body>
+</html>

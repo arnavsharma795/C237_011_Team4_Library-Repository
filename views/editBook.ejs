@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book - RP Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/">📚 RP Library System</a>
+        <div class="ms-auto">
+            <a href="/inventory" class="btn btn-outline-light me-2">
+                Inventory
+            </a>
+            <a href="/logout" class="btn btn-outline-light">
+                Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-warning">
+            <h3 class="mb-0">
+                Edit Book
+            </h3>
+        </div>
+
+
+
+        <div class="card-body">
+            <form action="/editBook/<%= book.bookId %>"
+                  method="POST">
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Book Title
+                    </label>
+                    <input  type="text" name="title" class="form-control" value="<%= book.title %>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Author
+                    </label>
+                    <input type="text" name="author" class="form-control" value="<%= book.author %>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Genre
+                    </label>
+                    <select name="genre" class="form-control" required>
+                        <option value="Fantasy" <%= book.genre === "Fantasy" ? "selected" : "" %>>Fantasy</option>
+                        <option value="Science"<%= book.genre === "Science" ? "selected" : "" %>>Science</option>
+                        <option value="Romance"<%= book.genre === "Romance" ? "selected" : "" %>>Romance</option>
+                        <option value="Adventure"<%= book.genre === "Adventure" ? "selected" : "" %>>Adventure</option>
+                        <option value="Horror"<%= book.genre === "Horror" ? "selected" : "" %>>Horror</option>
+                        <option value="Other"<%= book.genre === "Other" ? "selected" : "" %>>Other</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Description
+                    </label>
+                    <textarea name="description" class="form-control" rows="4"><%= book.description %></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Quantity
+                    </label>
+                    <input type="number" name="quantity" class="form-control" value="<%= book.quantity %>" min="0" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Current Image
+                    </label>
+                    <br>
+
+                    <% if(book.image){ %>
+
+                        <img
+                            src="<%= book.image %>"
+                            width="120"
+                            height="150"
+                            class="rounded shadow mb-2"
+                            onerror="this.onerror=null; this.src='/images/no-image.png';">
+
+                    <% } else { %>
+
+                        <img
+                            src="/images/no-image.png"
+                            width="120"
+                            height="150"
+                            class="rounded shadow mb-2">
+
+                    <% } %>
+                    
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Image URL</label>
+                    <input type="url" name="image" class="form-control" value="<%= book.image %>" placeholder="https://example.com/book.jpg">
+                </div>
+
+                <button type="submit" class="btn btn-warning">
+                    Save Changes
+                </button>
+
+                <a href="/inventory" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
